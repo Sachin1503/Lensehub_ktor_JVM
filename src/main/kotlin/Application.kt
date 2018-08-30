@@ -4,7 +4,7 @@ import db.UserDataSource
 
 class Application{
 
-    val connection = DBConnection.getConnection()
+    private val connection = DBConnection.getConnection()
     var userDataSource:UserDataSource? = null
 
     fun init(){
@@ -15,6 +15,6 @@ class Application{
     }
 
     private fun createTables(){
-        connection?.createStatement()?.execute(DBHelper.CRETAE_TABLE_USER)
+        connection?.createStatement()?.execute(DBHelper.CREATE_TABLE_USER)
     }
 }

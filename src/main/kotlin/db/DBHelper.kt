@@ -13,7 +13,7 @@ object DBHelper{
     const val USER_ZIP ="zip"
 
 
-    const val CRETAE_TABLE_USER = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " ( " +
+    const val CREATE_TABLE_USER = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " ( " +
             USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
             USER_NAME + " TEXT "+
             USER_MOBILE_NUMBER + " TEXT "+
