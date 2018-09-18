@@ -8,7 +8,6 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import models.Category
 import models.User
 import wsmodels.CategoryRequestModel
 
@@ -54,8 +53,9 @@ private fun startServer() {
             }
             post("/getCategories") {
                 val categoryRequestModel = gson.fromJson(call.receiveText(), CategoryRequestModel::class.java)
-                application.categoryDataSource?.getCategories(categoryRequestModel.city)
-                call.respondText { "User Deleted" }
+                val categories = application.categoryDataSource?.getCategories(categoryRequestModel.city)
+                val categoryJsonString = gson.toJson(categories)
+                call.respondText { categoryJsonString }
                 System.out.println("User Deleted")
             }
         }

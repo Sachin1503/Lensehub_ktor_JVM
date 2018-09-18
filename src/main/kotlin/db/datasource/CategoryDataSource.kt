@@ -32,7 +32,7 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
         return null
     }
 
-    fun getCategories(city: String): ArrayList<Category> {
+    fun getCategories(city: String?): ArrayList<Category> {
         val categorys = ArrayList<Category>()
         val sql = QueryUtils.selectQuery(DBHelper.TABLE_CATEGORY, null)
         val preparedStatement = connection?.prepareStatement(sql)

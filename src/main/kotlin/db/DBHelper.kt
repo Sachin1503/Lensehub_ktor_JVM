@@ -69,5 +69,5 @@ object DBHelper {
             IMAGE_PATH + " INTEGER , " +
             IMAGE_TYPE + " INTEGER " + " ) "
 
-
+    val MASTER_CATEGORIES_LIST = arrayOf("Camera","Lens","Lights","Equipments","Flashes","Audio Sound","Monitors","Cases and Bags","Filters")
 }

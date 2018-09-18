@@ -6,6 +6,7 @@ import db.datasource.CategoryDataSource
 import db.datasource.ImageDataSource
 import db.datasource.ItemDataSource
 import db.datasource.UserDataSource
+import models.Category
 
 class LHApplication() {
 
@@ -29,5 +30,16 @@ class LHApplication() {
         connection?.createStatement()?.execute(DBHelper.CREATE_TABLE_ITEM)
         connection?.createStatement()?.execute(DBHelper.CREATE_TABLE_CATEGORY)
         connection?.createStatement()?.execute(DBHelper.CREATE_TABLE_IMAGE)
+        insertMasterData()
+    }
+
+    private fun insertMasterData(){
+       insertMasterCategories()
+    }
+
+    private fun insertMasterCategories(){
+        for (categoryName in DBHelper.MASTER_CATEGORIES_LIST){
+            categoryDataSource?.create(Category(-1,categoryName,null))
+        }
     }
 }
