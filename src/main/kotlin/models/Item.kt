@@ -3,7 +3,7 @@ package models
 class Item(
         var id: Long,
         var user: User?,
-        var category: Category?,
+        var categoryName: String?,
         var lhImages: List<LHImage>?,
         var itemName: String,
         var brand: String,

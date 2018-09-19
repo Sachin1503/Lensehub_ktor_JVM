@@ -32,7 +32,7 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
         return null
     }
 
-    fun getCategories(city: String?): ArrayList<Category> {
+    fun getCategories(itemsCity: String?): ArrayList<Category> {
         val categorys = ArrayList<Category>()
         val sql = QueryUtils.selectQuery(DBHelper.TABLE_CATEGORY, null)
         val preparedStatement = connection?.prepareStatement(sql)
@@ -40,7 +40,22 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
 
         if (resultSet != null) {
             while (resultSet.next()) {
-                categorys.add(moveToResultSet(resultSet,city))
+                categorys.add(moveToResultSet(resultSet,itemsCity))
+            }
+
+        }
+        return categorys
+    }
+
+    fun getCategoryStings(): ArrayList<String> {
+        val categorys = ArrayList<String>()
+        val sql = QueryUtils.selectQuery(DBHelper.TABLE_CATEGORY, null)
+        val preparedStatement = connection?.prepareStatement(sql)
+        val resultSet: ResultSet? = preparedStatement?.executeQuery()
+
+        if (resultSet != null) {
+            while (resultSet.next()) {
+                categorys.add(resultSet.getString(DBHelper.CATEGORY_NAME))
             }
 
         }
