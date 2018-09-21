@@ -38,10 +38,10 @@ class LHApplication() {
     }
 
     private fun insertMasterCategories(){
-        for (categoryName in DBHelper.MASTER_CATEGORIES_LIST){
+        for (category in DBHelper.MASTER_CATEGORIES_LIST){
             val availableCategories = categoryDataSource?.getCategoryStings()
-            if (!availableCategories?.contains(categoryName)!!){
-                categoryDataSource?.create(Category(-1,categoryName,null))
+            if (!availableCategories?.contains(category.categoryValue)!!){
+                categoryDataSource?.create(category)
             }
         }
     }

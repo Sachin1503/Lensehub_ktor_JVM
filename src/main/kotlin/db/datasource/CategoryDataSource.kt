@@ -12,18 +12,20 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
 
     private fun getColumnForCreateOrUpdate(): Array<String> {
         return arrayOf(
-                DBHelper.CATEGORY_NAME)
+                DBHelper.CATEGORY_KEY,
+                DBHelper.CATEGORY_VALUE)
     }
 
     fun create(category: Category) {
         val sql = QueryUtils.createQuery(DBHelper.TABLE_CATEGORY, getColumnForCreateOrUpdate())
         val preparedStatement = connection?.prepareStatement(sql)
-        preparedStatement?.setString(1, category.categoryName)
+        preparedStatement?.setInt(1, category.categoryKey)
+        preparedStatement?.setString(2, category.categoryValue)
         preparedStatement?.execute()
     }
 
-    fun getCategory(id: Long, city: String?): Category? {
-        val sql = QueryUtils.selectQuery(DBHelper.TABLE_CATEGORY, DBHelper.CATEGORY_ID + " = " + id)
+    fun getCategory(key: Int, city: String?): Category? {
+        val sql = QueryUtils.selectQuery(DBHelper.TABLE_CATEGORY, DBHelper.CATEGORY_ID + " = " + key)
         val preparedStatement = connection?.prepareStatement(sql)
         val resultSet: ResultSet? = preparedStatement?.executeQuery()
         if (resultSet != null) {
@@ -55,7 +57,7 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
 
         if (resultSet != null) {
             while (resultSet.next()) {
-                categorys.add(resultSet.getString(DBHelper.CATEGORY_NAME))
+                categorys.add(resultSet.getString(DBHelper.CATEGORY_VALUE))
             }
 
         }
@@ -65,7 +67,7 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
     fun update(category: Category) {
         val sql = QueryUtils.updateQuery(DBHelper.TABLE_CATEGORY, getColumnForCreateOrUpdate(), DBHelper.CATEGORY_ID + " = " + category.id)
         val preparedStatement = connection?.prepareStatement(sql)
-        preparedStatement?.setString(1, category.categoryName)
+        preparedStatement?.setString(1, category.categoryValue)
         preparedStatement?.execute()
     }
 
@@ -77,8 +79,9 @@ class CategoryDataSource(val connection: Connection?, val lhApplication: LHAppli
 
     private fun moveToResultSet(resultSet: ResultSet,city:String?): Category {
         val id = resultSet.getLong(DBHelper.CATEGORY_ID)
-        val name = resultSet.getString(DBHelper.CATEGORY_NAME)
-        val items: ArrayList<Item>? = city?.let { lhApplication.itemDataSource?.getItems(id, it) }
-        return Category(id, name, items)
+        val key = resultSet.getInt(DBHelper.CATEGORY_KEY)
+        val value = resultSet.getString(DBHelper.CATEGORY_VALUE)
+        val items: ArrayList<Item>? = city?.let { lhApplication.itemDataSource?.getItems(key, it) }
+        return Category(id, key,value, items)
     }
 }

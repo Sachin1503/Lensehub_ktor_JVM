@@ -50,15 +50,15 @@ class ImageDataSource(val connection: Connection?, val lhApplication: LHApplicat
         return lhImages
     }
 
-    fun getAllLHImageByItem(itemId: Long): ArrayList<LHImage> {
-        val lhImages = ArrayList<LHImage>()
+    fun getAllLHImageIdsByItem(itemId: Long): ArrayList<Long> {
+        val lhImages = ArrayList<Long>()
         val sql = QueryUtils.selectQuery(DBHelper.TABLE_IMAGE, DBHelper.IMAGE_ID + " = " + itemId)
         val preparedStatement = connection?.prepareStatement(sql)
         val resultSet: ResultSet? = preparedStatement?.executeQuery()
 
         if (resultSet != null) {
             while (resultSet.next()) {
-                lhImages.add(moveToResultSet(resultSet))
+                lhImages.add(resultSet.getLong(DBHelper.IMAGE_ID))
             }
 
         }

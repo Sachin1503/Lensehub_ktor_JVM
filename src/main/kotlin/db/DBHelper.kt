@@ -1,5 +1,7 @@
 package db
 
+import models.Category
+
 object DBHelper {
 
     //User
@@ -17,18 +19,21 @@ object DBHelper {
     const val TABLE_ITEM = "item"
     const val ITEM_ID = "id"
     const val ITEM_USER_ID = "userId"
-    const val ITEM_CATEGORY_ID = "categoryId"
+    const val ITEM_CATEGORY_KEY = "categoryKey"
     const val ITEM_NAME = "itemName"
     const val ITEM_BRAND = "itemBrand"
     const val ITEM_MODEL = "itemModel"
     const val ITEM_PURCHASED_YEAR = "purchasedYear"
     const val ITEM_CITY = "city"
     const val ITEM_RENT_PRICE = "rentPrice"
+    const val ITEM_RENT_UNIT = "rentPriceUnit"
+    const val ITEM_RENT_CURRENCY = "rentPriceCurrency"
 
     //Category
     const val TABLE_CATEGORY = "category"
     const val CATEGORY_ID = "id"
-    const val CATEGORY_NAME = "categoryName"
+    const val CATEGORY_KEY = "categoryKey"
+    const val CATEGORY_VALUE = "categoryValue"
 
     //Category
     const val TABLE_IMAGE = "image"
@@ -51,17 +56,20 @@ object DBHelper {
     const val CREATE_TABLE_ITEM = "CREATE TABLE IF NOT EXISTS " + TABLE_ITEM + " ( " +
             ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ITEM_USER_ID + " INTEGER, " +
-            ITEM_CATEGORY_ID + " INTEGER, " +
+            ITEM_CATEGORY_KEY + " INTEGER, " +
             ITEM_NAME + " TEXT, " +
             ITEM_BRAND + " TEXT, " +
             ITEM_MODEL + " TEXT, " +
             ITEM_PURCHASED_YEAR + " TEXT, " +
             ITEM_CITY + " TEXT, " +
-            ITEM_RENT_PRICE + " REAL " + " ) "
+            ITEM_RENT_PRICE + " REAL, " +
+            ITEM_RENT_UNIT + " INTEGER, " +
+            ITEM_RENT_CURRENCY + " INTEGER " + " ) "
 
     const val CREATE_TABLE_CATEGORY = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORY + " ( " +
             CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            CATEGORY_NAME + " TEXT " + " ) "
+            CATEGORY_KEY + " INTEGER , " +
+            CATEGORY_VALUE + " TEXT " + " ) "
 
     const val CREATE_TABLE_IMAGE = "CREATE TABLE IF NOT EXISTS " + TABLE_IMAGE + " ( " +
             IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -69,5 +77,13 @@ object DBHelper {
             IMAGE_PATH + " INTEGER , " +
             IMAGE_TYPE + " INTEGER " + " ) "
 
-    val MASTER_CATEGORIES_LIST = arrayOf("Camera","Lens","Lights","Equipments","Flashes","Audio Sound","Monitors","Cases and Bags","Filters")
+    val MASTER_CATEGORIES_LIST = arrayOf(
+            Category(-1,1,"Camera",null),
+            Category(-1,2,"Lens",null),
+            Category(-1,3,"Lights",null),
+            Category(-1,4,"Equipments",null),
+            Category(-1,5,"Audio Sound",null),
+            Category(-1,6,"Monitors",null),
+            Category(-1,7,"Cases and Bags",null),
+            Category(-1,8,"Filters",null))
 }

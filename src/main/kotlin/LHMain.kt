@@ -11,6 +11,7 @@ import io.ktor.server.netty.Netty
 import models.Item
 import models.User
 import wsmodels.CategoryRequestModel
+import wsmodels.UserRequestModel
 
 fun main(args: Array<String>) {
     startServer()
@@ -23,29 +24,34 @@ private fun startServer() {
 
     val server = embeddedServer(Netty, port = 8780) {
         routing {
-            get("/getAllUser") {
-                val users = application.userDataSource?.getAllUser()
-                val jsonString = gson.toJson(users)
-                call.respondText(jsonString)
-            }
-            post("/getUser") {
-                val userId = gson.fromJson(call.receiveText(), User::class.java)
-                val users = application.userDataSource?.getUser(userId.id)
-                val jsonString = gson.toJson(users)
-                call.respondText(jsonString)
-            }
+
             post("/createUser") {
                 val user = gson.fromJson(call.receiveText(), User::class.java)
                 application.userDataSource?.create(user)
                 call.respondText { "User Created" }
+            }
+            post("/createItem"){
+                val item = gson.fromJson(call.receiveText(),Item::class.java)
+                application.itemDataSource?.create(item)
+                call.respondText { "Item created" }
             }
             post("/updateUser") {
                 val user = gson.fromJson(call.receiveText(), User::class.java)
                 application.userDataSource?.update(user)
                 call.respondText { "User Updated" }
             }
+            post("/updateItem") {
+                val item = gson.fromJson(call.receiveText(), Item::class.java)
+                application.itemDataSource?.update(item)
+                call.respondText { "Item Updated" }
+            }
             post("/deleteUser") {
                 val user = gson.fromJson(call.receiveText(), User::class.java)
+                application.userDataSource?.delete(user.id)
+                call.respondText { "User Deleted" }
+            }
+            post("/deleteItem") {
+                val user = gson.fromJson(call.receiveText(), Item::class.java)
                 application.userDataSource?.delete(user.id)
                 call.respondText { "User Deleted" }
             }
@@ -55,10 +61,16 @@ private fun startServer() {
                 val categoryJsonString = gson.toJson(categories)
                 call.respondText { categoryJsonString }
             }
-            post("/addItem"){
-                val item = gson.fromJson(call.receiveText(),Item::class.java)
-                application.itemDataSource?.create(item)
-                call.respondText { "Item created" }
+            get("/getAllUser") {
+                val users = application.userDataSource?.getAllUser()
+                val jsonString = gson.toJson(users)
+                call.respondText(jsonString)
+            }
+            post("/getUser") {
+                val userRequestModel = gson.fromJson(call.receiveText(), UserRequestModel::class.java)
+                val user = application.userDataSource?.getUser(userRequestModel.email)
+                val jsonString = gson.toJson(user)
+                call.respondText(jsonString)
             }
 
         }

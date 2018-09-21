@@ -31,6 +31,16 @@ class UserDataSource(val connection: Connection?) {
         return null
     }
 
+    fun getUser(email: String): User? {
+        val sql = QueryUtils.selectQuery(DBHelper.TABLE_USER, DBHelper.USER_EMAIL + " = '" + email+"'")
+        val preparedStatement = connection?.prepareStatement(sql)
+        val resultSet: ResultSet? = preparedStatement?.executeQuery()
+        if (resultSet != null && resultSet.next()) {
+            return moveToResultSet(resultSet)
+        }
+        return null
+    }
+
     fun getAllUser(): ArrayList<User> {
         val users = ArrayList<User>()
         val sql = QueryUtils.selectQuery(DBHelper.TABLE_USER, null)
