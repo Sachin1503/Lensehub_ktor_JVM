@@ -72,6 +72,10 @@ private fun startServer() {
                 val jsonString = gson.toJson(user)
                 call.respondText(jsonString)
             }
+            get("/") {
+
+                call.respondText("Hello")
+            }
 
         }
     }
